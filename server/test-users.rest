@@ -1,0 +1,24 @@
+POST http://localhost:3000/api/user/register HTTP/1.1
+content-type: application/json
+
+{    
+   "name": "name2",
+   "lastName": "lastName",
+   "email":"name@email2.pl",
+   "password":"password"
+}
+###
+GET http://localhost:3000/api/user/confirm/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibmFtZSIsImxhc3ROYW1lIjoibGFzdE5hbWUiLCJlbWFpbCI6Im5hbWVAZW1haWwucGwiLCJwYXNzd29yZCI6IiQyYiQxMCRGaE5Vby9MZjRyT2Z4Vm1hd0hpN2xlMHdHblJhMlhNdXoxdVl2Y1BGQ0ZaSEU1b2hNdVdNQyIsImlhdCI6MTc0NzcyOTYxMH0.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibmFtZSIsImxhc3ROYW1lIjoibGFzdE5hbWUiLCJlbWFpbCI6Im5hbWVAZW1haWwucGwiLCJwYXNzd29yZCI6IiQyYiQxMCRkWkhpRUtnMmFsRXcwcDBZMWNnb09PVEFLVlV0cjJRTmpiRDhRRXRKRWFiNi8wdWRHN1hVLiIsImlhdCI6MTc0OTIwODk1NywiZXhwIjoxNzQ5MjA4OTYyfQ.2lybgwSwWttSWaTicUtxJ5foMAAUSU3XHIg0t3KQH-M
+
+###
+POST http://localhost:3000/api/user/login HTTP/1.1
+content-type: application/json
+
+{    
+   "email":"name@email2.pl",
+   "password":"password"
+}
+
+###eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MjEyODkxLCJleHAiOjE3NDkyMTY0OTF9.EIFWgMzc2nMyRsjapmEszdq1eU52-qkNvpzpkcUn9to
+GET  http://localhost:3000/api/profile/test123@email3.com
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MjEzMTcyLCJleHAiOjE3NDkyMTY3NzJ9.CBtc-Ly05dJf6nPV5se_9UFfyYZrhkMYGSsOjVXqOi8
