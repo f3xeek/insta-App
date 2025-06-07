@@ -1,4 +1,4 @@
-import { verifiedUsers, unverifiedUsers, images } from "../model.js";
+import { verifiedUsers, unverifiedUsers, blacklist } from "../model.js";
 import bcryptjs from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import jsonController from "./jsonController.js";
@@ -85,5 +85,12 @@ export default {
     const user = verifiedUsers.filter((user) => user.email == email)[0]
     user.pfp = url
     return true
+  },
+  deactivateToken(token){
+    blacklist.push(token)
+    return true
+  },
+  checkToken(token){
+    return !blacklist.includes(token)
   }
 };

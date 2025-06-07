@@ -21,12 +21,13 @@ content-type: application/json
 
 ###eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MjEyODkxLCJleHAiOjE3NDkyMTY0OTF9.EIFWgMzc2nMyRsjapmEszdq1eU52-qkNvpzpkcUn9to
 GET  http://localhost:3000/api/profile/self
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzA5OTEzLCJleHAiOjE3NDkzMTM1MTN9.ElGCkvfanj40Hkq8tBHZfr5kpnrWgXquEK7bTaG4MxM
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzEwNzg0LCJleHAiOjE3NDkzMTQzODR9.SRMzCvDEvtc78KPF0-GTpHP98SxczcSxnRSyizU7ZUU
 
 ###
 PATCH  http://localhost:3000/api/profile HTTP/1.1
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzA5NTA2LCJleHAiOjE3NDkzMTMxMDZ9.H7gaVAVbblVbDeon1Cg4cqYOgbSzcL2MoMQV5DbHebI
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzEwNzg0LCJleHAiOjE3NDkzMTQzODR9.SRMzCvDEvtc78KPF0-GTpHP98SxczcSxnRSyizU7ZUU
+
 {    
    "name":"test",
    "lastName":"Filip2"
@@ -43,3 +44,7 @@ Content-Type: image/jpeg
 
 < ./avatar.jpg 
 --/
+
+###
+POST http://localhost:3000/api/profile/logout HTTP/1.1
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzEwNzg0LCJleHAiOjE3NDkzMTQzODR9.SRMzCvDEvtc78KPF0-GTpHP98SxczcSxnRSyizU7ZUU

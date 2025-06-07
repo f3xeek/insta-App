@@ -32,8 +32,10 @@ const router = async (req, res, email) => {
                     jsonController.addFileToJson(email, filepath)
                     if(userController.setPfp(email,filepath))sendSuccess(res,"Pfp set")
                     else sendError(res,"something bad happened")
-
                 })  
+        }else if(req.url == "/api/profile/logout"){
+            const token = req.headers.authorization.split(" ")[1];
+            if(userController.deactivateToken(token)) sendSuccess(res,"user logged out")
         }else sendError(res, "Nie ma takiego adresu")
     }
 }

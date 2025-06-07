@@ -1,7 +1,7 @@
 import getRequestData, {sendError, sendSuccess} from "../utils.js"
 import userController from "../controllers/userController.js"
 
-const router = async (req, res) => {
+const router = async (req, res,email) => {
     if (req.method == "GET") {
         if (req.url.match(/\/api\/user\/confirm\/(.+)/)) {
             const token = req.url.match(/\/api\/user\/confirm\/(.+)/)[1]

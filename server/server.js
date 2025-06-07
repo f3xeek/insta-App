@@ -12,7 +12,7 @@ createServer(async (req, res) => {
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         const token = req.headers.authorization.split(" ")[1]
         const logged = userController.validateUserByToken(token)
-        if (logged) {
+        if (logged && userController.checkToken(token)) {
             if (req.url.search("/api/photos") != -1) {
                 await imageRouter(req, res)
             }

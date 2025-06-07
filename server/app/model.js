@@ -27,6 +27,7 @@ const tags = [
         popularity: 900
     }
 ]
+const blacklist = []
 const verifiedUsers = []
 const unverifiedUsers = []
-export { images, tags, unverifiedUsers, verifiedUsers };
+export { images, tags, unverifiedUsers, verifiedUsers, blacklist };
