@@ -7,7 +7,6 @@ const router = async (req, res) => {
             const image = jsonController.getImageById(currentId)
             if (image) {
                 const imageFile = await filtersController.getImageWithFilter('', image.url)
-                console.log(imageFile)
                 res.end(imageFile)
             }
         } else if (req.url.match(/\/api\/getimage\/([0-9]+)\/filter\/([a-z]+)$/)) {

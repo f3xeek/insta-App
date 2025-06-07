@@ -1,6 +1,6 @@
 import jsonController from "../controllers/jsonController.js";
 import filtersController from "../controllers/filtersController.js";
-import getRequestData from "../utils.js";
+import getRequestData, {sendError,sendSuccess} from "../utils.js";
 const router = async (req, res) => {
     switch (req.method) {
         case "GET":
@@ -9,9 +9,9 @@ const router = async (req, res) => {
                 const image = jsonController.getImageById(currentId)
                 if (image) {
                     const metadata = await filtersController.getImageMetadata(image.url)
-                    res.end(JSON.stringify(metadata, null, 5))
+                    sendSuccess(res,metadata)
                 } else {
-                    res.end(JSON.stringify({ message: "nie ma takiego id" }))
+                    sendError(res, "nie ma takiego id");
                 }
             }
             break;
@@ -21,6 +21,7 @@ const router = async (req, res) => {
                 const data = JSON.parse(requestData)
                 const image = jsonController.getImageById(data.id)
                 image.history.push({ status: data.filterName, lastModifiedDate: Date.now() })
+                sendSuccess(res,image)
                 break;
             }
     }

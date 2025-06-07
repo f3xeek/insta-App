@@ -1,4 +1,4 @@
-import getRequestData from "../utils.js"
+import getRequestData, {sendError, sendSuccess} from "../utils.js"
 import userController from "../controllers/userController.js"
 
 const router = async (req, res) => {
@@ -6,7 +6,9 @@ const router = async (req, res) => {
         if (req.url.match(/\/api\/user\/confirm\/(.+)/)) {
             const token = req.url.match(/\/api\/user\/confirm\/(.+)/)[1]
             const data = await userController.verifyUser(token)
-            res.end(JSON.stringify(data))
+            if(data.status)sendSuccess(res,"user confirmed")
+            else sendError(res, data.message)
+
         }
 
     } else if (req.method == "POST") {
@@ -17,14 +19,16 @@ const router = async (req, res) => {
             if (emailVerification){
                 if (data.name && data.email && data.lastName && data.password) {
                     const token = await userController.addNewUser(data)
-                    res.end(JSON.stringify({ status: "success", message: `click this link: http://localhost:3000/api/user/confirm/${token}` }))
-                } else res.end(JSON.stringify({ status: "error", message: "Empty fields" }, null, 5))
-            }else res.end(JSON.stringify({status:"error", message:"email already taken"},null,5))
+                    const message = `click this link: http://localhost:3000/api/user/confirm/${token}`
+                    sendSuccess(res, {message:message})
+                } else sendError(res, "Empty fields")
+            }else sendError(res, "email already taken");
         } else if (req.url == "/api/user/login") {
             const requestData = await getRequestData(req)
             const data = JSON.parse(requestData)
             const validated = await userController.validateUser(data.email, data.password)
-            res.end(JSON.stringify(validated, null, 5))
+            if (validated.status)sendSuccess(res,validated.token)
+            else sendError(res, validated.message)
         }
     }
 }

@@ -7,6 +7,7 @@ import getImageRouter from "./app/routers/getImageRouter.js"
 import usersRouter from "./app/routers/userRouter.js"
 import profileRouter from "./app/routers/profileRouter.js"
 import userController from './app/controllers/userController.js';
+import { sendError } from './app/utils.js';
 createServer(async (req, res) => {
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         const token = req.headers.authorization.split(" ")[1]
@@ -24,10 +25,10 @@ createServer(async (req, res) => {
             } else if (req.url.search("/api/profile") != -1) {
                 await profileRouter(req, res, logged);
             }
-        } else res.end(JSON.stringify({ status: "error", message: "User not logged in." }))
+        } else sendError(res, "User not logged in.");
     } else if (req.url.search("/api/user") != -1) {
         await usersRouter(req, res)
-    } else res.end(JSON.stringify({ status: "error", message: "User not logged in." }))
+    } else sendError(res, "User not logged in.")
 
 })
     .listen(process.env.APP_PORT, () => console.log("listen on " + process.env.APP_PORT))

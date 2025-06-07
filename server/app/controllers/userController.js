@@ -25,11 +25,11 @@ export default {
         const decoded = verify(token, process.env.PRIVATE_KEY);
         verifiedUsers.push({ ...decoded, id: Date.now(), pfp: null });
         unverifiedUsers.splice(unverifiedUsers.indexOf(user), 1);
-        return { status: "success" };
+        return {status:true};
       } catch (ex) {
-        return { status: "error", message: "token Expired" };
+        return { status: false, message: "token Expired" };
       }
-    } else return { status: "error", message: "noTokenFound" };
+    } else return { status: false, message: "noTokenFound" };
   },
   async validateUser(email, password) {
     const user = verifiedUsers.filter((user) => user.email == email)[0];
@@ -39,9 +39,9 @@ export default {
         const token = sign({ email: user.email }, process.env.PRIVATE_KEY, {
           expiresIn: "1h",
         });
-        return { status: "success", token: token };
-      } else return { status: "error", message: "incorrect credentials" };
-    } else return { status: "error", message: "no user with this email" };
+        return { status: true, token: token };
+      } else return { status: false, message: "incorrect credentials" };
+    } else return { status: false, message: "no user with this email" };
   },
   validateUserByToken(token) {
     try {
@@ -60,7 +60,7 @@ export default {
     if (user) {
       const data = { name: user.name, lastName: user.lastName, pfp: user.pfp };
       return {
-        status: "success",
+        status: true,
         data: data,
         images: jsonController.getImagesByAlbum(email),
       };
@@ -70,9 +70,9 @@ export default {
     try{
         const user = verifiedUsers.filter((user) => user.email == email)[0];
         Object.assign(user,data)
-        return{status:"success"}
+        return{status:true}
     } catch(e){
-        return {status:error, message:e}
+        return {status:false, message:e}
     }
   },
   checkEmail(email){
