@@ -8,7 +8,20 @@ import usersRouter from "./app/routers/userRouter.js"
 import profileRouter from "./app/routers/profileRouter.js"
 import userController from './app/controllers/userController.js';
 import { sendError } from './app/utils.js';
+
+
 createServer(async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.setHeader('Access-Control-Request-Method', '*');
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PATCH, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', '*, Authorization, Content-Type');
+
+    if (req.method === "OPTIONS") {
+        res.writeHead(200);
+        res.end();
+        return;
+    }
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         const token = req.headers.authorization.split(" ")[1]
         const logged = userController.validateUserByToken(token)
