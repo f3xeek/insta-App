@@ -22,3 +22,13 @@ content-type: application/json
 ###eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MjEyODkxLCJleHAiOjE3NDkyMTY0OTF9.EIFWgMzc2nMyRsjapmEszdq1eU52-qkNvpzpkcUn9to
 GET  http://localhost:3000/api/profile/self
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5Mjk3NTkxLCJleHAiOjE3NDkzMDExOTF9.Acs3JVbyGEd_p8VDO1_7HOc2HeClAfac1i7Y6hNl_7U
+
+###
+PATCH  http://localhost:3000/api/profile HTTP/1.1
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5Mjk4MjM5LCJleHAiOjE3NDkzMDE4Mzl9.4aKqYfnnYKxnUaIM7B8-DiUd3VViXYRBww-AIDOVsUU
+
+{    
+   "name":"test",
+   "lastName":"Filip2"
+}
