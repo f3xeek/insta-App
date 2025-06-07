@@ -7,7 +7,7 @@ const router = async (req, res) => {
                 const currentId = req.url.match(/\/api\/tags\/([0-9]+)/)[1]
                 const tag = tagsController.getTagById(currentId)
                 if (tag) res.end(JSON.stringify(tag, null, 5))
-                else res.end(JSON.stringify({ status: 404, message: "nie ma takiego id" }))
+                else res.end(JSON.stringify({ status: "error", message: "nie ma takiego id" }))
 
             } else if (req.url == "/api/tags/raw") {
                 const alltags = tagsController.getTagsList()
@@ -15,7 +15,7 @@ const router = async (req, res) => {
             } else if (req.url == "/api/tags") {
                 res.end(JSON.stringify(tagsController.getAllTags(), null, 5))
             } else {
-                res.end(JSON.stringify({ status: 404, message: "nie ma takiego adresu" }))
+                res.end(JSON.stringify({ status: "error", message: "nie ma takiego adresu" }))
             }
             break;
         case "POST":
@@ -26,9 +26,9 @@ const router = async (req, res) => {
 
                 if (tag) {
                     res.end(JSON.stringify(tag, null, 5))
-                } else res.end(JSON.stringify({ status: 403, message: "cos poszło nie tak" }))
+                } else res.end(JSON.stringify({ status: "error", message: "cos poszło nie tak" }))
 
-            } else res.end(JSON.stringify({ status: 404, message: "nie ma takiego adresu" }))
+            } else res.end(JSON.stringify({ status: "error", message: "nie ma takiego adresu" }))
 
     }
 }

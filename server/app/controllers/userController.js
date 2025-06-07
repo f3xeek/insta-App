@@ -15,7 +15,7 @@ export default {
       process.env.PRIVATE_KEY,
       { expiresIn: "1m" }
     );
-    unverifiedUsers.push({ token: token });
+    unverifiedUsers.push({ token: token, email:userData.email});
     return token;
   },
   async verifyUser(token) {
@@ -25,7 +25,7 @@ export default {
         const decoded = verify(token, process.env.PRIVATE_KEY);
         verifiedUsers.push({ ...decoded, id: Date.now(), pfp: null });
         unverifiedUsers.splice(unverifiedUsers.indexOf(user), 1);
-        return { status: "ok" };
+        return { status: "success" };
       } catch (ex) {
         return { status: "error", message: "token Expired" };
       }
@@ -55,6 +55,7 @@ export default {
     }
   },
   getProfileData(email) {
+    console.log(unverifiedUsers);
     const user = verifiedUsers.filter((user) => user.email == email)[0];
     if (user) {
       const data = { name: user.name, lastName: user.lastName, pfp: user.pfp };
@@ -73,6 +74,11 @@ export default {
     } catch(e){
         return {status:error, message:e}
     }
-    
+  },
+  checkEmail(email){
+    const user = verifiedUsers.filter((user) => user.email == email)[0];
+    const unverifiedUser = unverifiedUsers.filter((user) => user.email == email)[0];
+    if(user || unverifiedUser) return false
+    return true
   }
 };
