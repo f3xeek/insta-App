@@ -43,5 +43,8 @@ export default {
             timestamp: Date.now()
         })
         return image
+    },
+    getImagesByAlbum : (album)=>{
+        return images.filter(image=> image.album == album) 
     }
 }

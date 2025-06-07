@@ -22,7 +22,7 @@ createServer(async (req, res) => {
             } else if (req.url.search("/api/getimage") != -1) {
                 await getImageRouter(req, res)
             } else if (req.url.search("/api/profile") != -1) {
-                await profileRouter(req, res)
+                await profileRouter(req, res, logged);
             }
         } else res.end(JSON.stringify({ status: "error", message: "User not logged in." }))
     } else if (req.url.search("/api/user") != -1) {

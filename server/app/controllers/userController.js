@@ -1,6 +1,7 @@
-import { verifiedUsers, unverifiedUsers } from "../model.js";
+import { verifiedUsers, unverifiedUsers, images } from "../model.js";
 import bcryptjs from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
+import jsonController from "./jsonController.js";
 
 const { sign, verify } = jsonwebtoken;
 const { hash, compare } = bcryptjs;
@@ -21,7 +22,7 @@ export default {
         if (user) {
             try {
                 const decoded = verify(token, process.env.PRIVATE_KEY)
-                verifiedUsers.push({ ...decoded, id: Date.now() })
+                verifiedUsers.push({ ...decoded, id: Date.now(), pfp:null})
                 unverifiedUsers.splice(unverifiedUsers.indexOf(user), 1)
                 return { status: "ok" }
             } catch (ex) {
@@ -47,9 +48,15 @@ export default {
             const decoded = verify(token, process.env.PRIVATE_KEY)
             if (decoded) {
                 const veri = verifiedUsers.some(user => user.email == decoded.email)
-                return veri
+                if (veri) return decoded.email
             }
         } catch (e) { return false }
-
+    },
+    getProfileData(email){
+        const user = verifiedUsers.filter((user) => user.email == email)[0];
+        if(user){
+            const data = {name:user.name, lastName:user.lastName, pfp:user.pfp}
+            return {status:"success", data:data, images:jsonController.getImagesByAlbum(email)}
+        }else return {status:"error", message:"No user with That email."}
     }
 }
