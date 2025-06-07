@@ -80,5 +80,10 @@ export default {
     const unverifiedUser = unverifiedUsers.filter((user) => user.email == email)[0];
     if(user || unverifiedUser) return false
     return true
+  },
+  setPfp(email, url){
+    const user = verifiedUsers.filter((user) => user.email == email)[0]
+    user.pfp = url
+    return true
   }
 };

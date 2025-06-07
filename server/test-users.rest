@@ -21,14 +21,25 @@ content-type: application/json
 
 ###eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MjEyODkxLCJleHAiOjE3NDkyMTY0OTF9.EIFWgMzc2nMyRsjapmEszdq1eU52-qkNvpzpkcUn9to
 GET  http://localhost:3000/api/profile/self
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzA4OTA3LCJleHAiOjE3NDkzMTI1MDd9.v62dY5LFYxbAlzoZEE7OmfjWEpK4Wcy0M2S6vi3ObME
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzA5OTEzLCJleHAiOjE3NDkzMTM1MTN9.ElGCkvfanj40Hkq8tBHZfr5kpnrWgXquEK7bTaG4MxM
 
 ###
 PATCH  http://localhost:3000/api/profile HTTP/1.1
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzA4OTA3LCJleHAiOjE3NDkzMTI1MDd9.v62dY5LFYxbAlzoZEE7OmfjWEpK4Wcy0M2S6vi3ObME
-
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzA5NTA2LCJleHAiOjE3NDkzMTMxMDZ9.H7gaVAVbblVbDeon1Cg4cqYOgbSzcL2MoMQV5DbHebI
 {    
    "name":"test",
    "lastName":"Filip2"
 }
+
+###
+POST http://localhost:3000/api/profile HTTP/1.1
+Content-Type: multipart/form-data; boundary=/
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hbWVAZW1haWwyLnBsIiwiaWF0IjoxNzQ5MzA5OTEzLCJleHAiOjE3NDkzMTM1MTN9.ElGCkvfanj40Hkq8tBHZfr5kpnrWgXquEK7bTaG4MxM
+
+--/
+Content-Disposition: form-data; name="file"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< ./avatar.jpg 
+--/
