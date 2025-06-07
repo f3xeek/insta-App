@@ -1,6 +1,7 @@
 import userController from "../controllers/userController.js"
 import fileController from "../controllers/fileController.js"
 import jsonController from "../controllers/jsonController.js"
+import filtersController from "../controllers/filtersController.js"
 import getRequestData, {sendError,sendSuccess} from "../utils.js"
 import formidable from "formidable"
 const router = async (req, res, email) => {
@@ -27,11 +28,13 @@ const router = async (req, res, email) => {
             let form = formidable({})
                 form.uploadDir = fileController.getTempFileDir()
                 form.keepExtensions = true
-                form.parse(req, (err, fields, files) => {
-                    const filepath = fileController.fileMoveToAlbum(email, files.file.path)
-                    jsonController.addFileToJson(email, filepath)
-                    if(userController.setPfp(email,filepath))sendSuccess(res,"Pfp set")
-                    else sendError(res,"something bad happened")
+                form.parse(req, async (err, fields, files) => {
+                    const filepath = await filtersController.cropImageToSquare(email, files.file.path);
+                    if (filepath){
+                        jsonController.addFileToJson(email, filepath)
+                        if(userController.setPfp(email,filepath))sendSuccess(res,"Pfp set")
+                        else sendError(res,"something bad happened")
+                    }else sendError(res, "image crop failed")
                 })  
         }else if(req.url == "/api/profile/logout"){
             const token = req.headers.authorization.split(" ")[1];

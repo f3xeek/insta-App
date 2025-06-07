@@ -1,5 +1,5 @@
 import path from "path"
-import fs from "fs"
+import fs from "fs/promises"
 
 const __dirname = path.resolve()
 
@@ -7,14 +7,21 @@ export default {
     getTempFileDir: () => {
         return path.join(__dirname, "temp")
     },
-    fileMoveToAlbum: (albumName, filePath) => {
-        if (!fs.existsSync(path.join(__dirname, "app/albums", albumName))) {
-            fs.mkdir(path.join(__dirname, "app/albums", albumName), (err) => { if (err) throw err })
+    fileMoveToAlbum: async (albumName, filePath) => {
+        try  {
+            const albumDir = path.join(__dirname, "app/albums", albumName)
+            await fs.mkdir(albumDir, { recursive: true })
+
+            const fileName = path.basename(filePath)
+            const outputPath = path.join(albumDir, fileName)
+
+            await fs.rename(filePath, outputPath)
+
+            return outputPath
+        } catch (err) {
+            console.error("Error moving file:", err)
+            throw err
         }
-        const parts = filePath.split("\\")
-        const outputPath = path.join(__dirname, "app/albums", albumName, parts[parts.length - 1])
-        fs.rename(filePath, outputPath, (err) => { if (err) throw err })
-        return outputPath
     },
     removeFile: (filepath) => {
         if (fs.existsSync(filepath)) {
