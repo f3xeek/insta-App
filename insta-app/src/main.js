@@ -9,7 +9,7 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 import Menubar from "primevue/menubar";
 import Aura from "@primeuix/themes/aura";
-
+import { Sidebar } from 'primevue';
 import "primeicons/primeicons.css";
 
 const app = createApp(App)
