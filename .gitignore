@@ -137,3 +137,6 @@ dist
 
 temp
 albums
+*.rest
+*.jpg
+.vscode
