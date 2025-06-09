@@ -1,16 +1,18 @@
 import axios from "axios"
 
-const get = (url, options = {}, token = null) =>
+const get = (url, token = null, options = null) =>
 new Promise((resolve, reject) => {
-    url += "?";
-    for (const property in options) {
-    url += `${property}=${options[property]}&`;
+    if (options){
+        url += "?";
+        for (const property in options) {
+        url += `${property}=${options[property]}&`;}
     }
 
     const config = {
     withCredentials: true,
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     };
+    console.log(url);
     setTimeout(() => {
     axios
         .get(url, config)
@@ -85,17 +87,20 @@ const patch = (url, dataObject, token = null) =>
     });
 
 
-const getCurrentUser = (token) => get(`http://localhost:3000/api/profile/self`,token);
-const registerUser = (userObject) => post(`http://localhost:3000/api/user/register`, userObject);
+const getCurrentUser = async (token) =>{return await get(`http://localhost:3000/api/profile/self`, (token = token));};
+const registerUser = async (userObject) =>{ return await  post(`http://localhost:3000/api/user/register`, userObject);}
 const loginUser = async (userObject) => { return await post(`http://localhost:3000/api/user/login`, userObject); }
 const logoutUser = async () => {return await post(`http://localhost:3000/api/profile/logout`, {token});}
-const confirmUser = async (link) =>get(link);
+const confirmUser = async (link) =>{ return await get(link);}
+const postFile  = async (formData) => { return await post("http://localhost:3000/api/photos/", formData);}
+const massTags = async (imageId, tagList) => {return await post("http://localhost:3000/api/photos/tags/mass", {tagsId:tagList, imageId:imageId});}
 
 export {
-  getCurrentUser,
-  registerUser,
-  loginUser,
-  logoutUser,
-  confirmUser,
-  
+    getCurrentUser,
+    registerUser,
+    loginUser,
+    logoutUser,
+    confirmUser,
+    postFile,
+    massTags,
 };

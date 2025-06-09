@@ -1,5 +1,6 @@
 <template>
-    <div class="flex heig">
+    <appLoader v-show="userLoading" />
+    <div class="flex heig" v-show="!userLoading">
       <div class="flex heig">
         <div class="sidebar">
           <h2 class="text-lg font-semibold mb-4">Menu</h2>
@@ -23,9 +24,6 @@
       <div class="flex dir-row">
         <img :src="selectedImage" alt="Uploaded" class="image-dialog" />
         <div>
-          <label class="item">Title:</label>
-          <InputText v-model="title" placeholder="Enter a title" class="item" />
-          <br />
           <label class="item">Tags:</label>
           <AutoComplete
             v-model="tags"
@@ -44,108 +42,118 @@
         </div>
       </div>
     </Dialog>
-  </template>
+</template>
   
-  <script>
-  import PanelMenu from 'primevue/panelmenu';
-  import FileUpload from 'primevue/fileupload';
-  import Dialog from 'primevue/dialog';
-  import InputText from 'primevue/inputtext';
-  import AutoComplete from 'primevue/autocomplete';
-  import Button from 'primevue/button';
-  
-  export default {
-    components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button },
-    data() {
-      return {
-        showDialog: false,
-        selectedImage: null,
-        title: '',
-        tags: [],
-        tagQuery: '',
-        tagSuggestions: [],
-        allTagOptions: ['Nature', 'Portrait', 'Abstract', 'Urban', 'Travel', 'Macro'] ,
-        items: [
-          {
-            label: 'Upload Picture',
-            icon: 'pi pi-upload',
-            command: () => {
-              this.$refs.fileUploader.choose();
+<script>
+    import appLoader from '@/components/appLoader.vue';
+    import PanelMenu from 'primevue/panelmenu';
+    import FileUpload from 'primevue/fileupload';
+    import Dialog from 'primevue/dialog';
+    import InputText from 'primevue/inputtext';
+    import AutoComplete from 'primevue/autocomplete';
+    import Button from 'primevue/button';
+    export default {
+        components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button,appLoader },
+        data() {
+        return {
+            showDialog: false,
+            selectedImage: null,
+            title: '',
+            tags: [],
+            tagQuery: '',
+            tagSuggestions: [],
+            allTagOptions: ['Nature', 'Portrait', 'Abstract', 'Urban', 'Travel', 'Macro'] ,
+            items: [
+            {
+                label: 'Upload Picture',
+                icon: 'pi pi-upload',
+                command: () => {
+                    this.$refs.fileUploader.choose();
+                }
             }
-          }
-        ]
-      };
-    },
-    methods: {
-      onSelect(e) {
-        const file = e.files[0];
-        this.selectedImage = URL.createObjectURL(file);
-        this.showDialog = true;
-      },
-      onTagSelect(val) {
-      if (!this.allTagOptions.includes(val)) {
-        this.allTagOptions.push(val)
-      }
-      this.tagQuery = '' 
-    },
-    addCustomTag() {
-      const val = this.tagQuery.trim()
-      if (val && !this.tags.includes(val)) {
-        this.tags = [...this.tags, val]
-        if (!this.allTagOptions.includes(val)) {
-          this.allTagOptions.push(val)
+            ]
+        };
+        },
+        methods: {
+            onSelect(e) {
+                const file = e.files[0];
+                this.selectedImage = URL.createObjectURL(file);
+                this.showDialog = true;
+            },
+
+            onTagSelect(val) {
+                if (!this.allTagOptions.includes(val)) {
+                    this.allTagOptions.push(val)
+                }
+                this.tagQuery = '' 
+            },
+            addCustomTag() {
+                const val = this.tagQuery.trim()
+                if (val && !this.tags.includes(val)) {
+                    this.tags = [...this.tags, val]
+                    if (!this.allTagOptions.includes(val)) {
+                    this.allTagOptions.push(val)
+                    }
+                }
+                this.tagQuery = ''
+            },
+            filterTags(event) {
+                this.tagQuery = event.query
+                const query = event.query.toLowerCase();
+                console.log(this.allTagOptions)
+                this.tagSuggestions = this.allTagOptions.filter(opt =>
+                opt.toLowerCase().includes(query)
+                );
+            },
+            onSave() {
+                console.log(this.tags);
+                this.title= '',
+                this.tags= [],
+                this.tagQuery= ''
+                this.showDialog = false;
+            }
+        },
+        beforeCreate() {
+            this.$store.dispatch("FETCH_CURRENT_USER");
+        },
+        computed:{
+            userLoading(){
+                return this.$store.getters.GET_CURRENT_USER_LOADING
+            }
         }
-      }
-      this.tagQuery = ''
-    },
-      filterTags(event) {
-        this.tagQuery = event.query
-        const query = event.query.toLowerCase();
-        this.tagSuggestions = this.allTagOptions.filter(opt =>
-          opt.toLowerCase().includes(query)
-        );
-      },
-      onSave() {
-        console.log(this.tags);
-        this.title= '',
-        this.tags= [],
-        this.tagQuery= ''
-        this.showDialog = false;
-      }
-    }
   };
-  </script>
+</script>
   
-  <style scoped>
-  .image-dialog {
-    border-radius: 30px;
-    max-width: 40vw;
-    max-height: 70vh;
-    margin: 30px;
-  }
-  .flex {
-    display: flex;
-  }
-  .sidebar {
-    padding: 20px;
-    width: 25vw;
-    min-width: 250px;
-    border-right: 2px gray solid;
-  }
-  .item {
-    margin: 10px auto;
-  }
-  .heig {
-    height: 80vh;
-  }
-  .site {
-    padding: 20px;
-  }
-  .wi {
-    width: 100%;
-  }
-  .auto {
-    margin: auto !important;
-  }
-  </style>
+<style scoped>
+    .image-dialog {
+        border-radius: 30px;
+        max-width: 40vw;
+        max-height: 70vh;
+        margin: 30px;
+    }
+    .flex {
+        display: flex;
+    }
+    .sidebar {
+        padding: 20px;
+        width: 25vw;
+        min-width: 250px;
+        border-right: 2px gray solid;
+    }
+    .item {
+        margin: 10px auto;
+    }
+    .heig {
+        height: 80vh;
+    }
+    .site {
+        padding: 20px;
+    }
+    .wi {
+        width: 100%;
+    }
+    .auto {
+        margin: auto !important;
+    }
+</style>
   

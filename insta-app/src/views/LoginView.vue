@@ -45,7 +45,7 @@ export default {
                 this.$store.dispatch("LOGIN_USER", { email: this.email, password: this.password })
                 .then(() => {
 
-                    const data  = this.$store.getters.GET_CURRENT_USER;
+                    const data  = this.$store.getters.GET_CURRENT_USER_TOKEN;
                     if (data) this.$router.push("/");
                 })
                 .catch((e) => {
