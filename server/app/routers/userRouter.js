@@ -3,12 +3,11 @@ import userController from "../controllers/userController.js"
 
 const router = async (req, res,email) => {
     if (req.method == "GET") {
-        if (req.url.match(/\/api\/user\/confirm\/(.+)/)) {
-            const token = req.url.match(/\/api\/user\/confirm\/(.+)/)[1]
+        if (req.url.match(/\/api\/user\/confirm\/([^?]+)/)) {
+            const token = req.url.match(/\/api\/user\/confirm\/([^?]+)/)[1];
             const data = await userController.verifyUser(token)
             if(data.status)sendSuccess(res,"user confirmed")
             else sendError(res, data.message)
-
         }
 
     } else if (req.method == "POST") {
@@ -19,8 +18,9 @@ const router = async (req, res,email) => {
             if (emailVerification){
                 if (data.name && data.email && data.lastName && data.password) {
                     const token = await userController.addNewUser(data)
-                    const message = `click this link: http://localhost:3000/api/user/confirm/${token}`
-                    sendSuccess(res, {message:message})
+                    const message = "click this link: "
+                    const link = `http://localhost:3000/api/user/confirm/${token}`
+                    sendSuccess(res, {message:message, link:link})
                 } else sendError(res, "Empty fields")
             }else sendError(res, "email already taken");
         } else if (req.url == "/api/user/login") {

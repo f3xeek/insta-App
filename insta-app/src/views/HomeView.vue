@@ -16,9 +16,9 @@ export default {
     //         return this.$store.getters.GET_PROMOTIONS_LOADING;
     //     }
     // },
-    // mounted() {
-    //     this.$store.dispatch("FETCH_PROMOTIONS");
-    // },
+    mounted() {
+        console.log(this.$store.getters.GET_CURRENT_USER)
+    },
 }
 </script>
 

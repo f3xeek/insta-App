@@ -1,100 +1,71 @@
 <template>
-    <div class="background">
-        <AppLoader v-show="loading" />
-        <div v-show="!loading" class="flex">
-            <form @submit="onSubmit">
-                <input v-model="email" placeholder="email" />
-                <input type="password" v-model="password" placeholder="pass" />
-                <button type="submit" :disabled="disabled">Send</button>
-            </form>
-        </div>
+    <AppLoader v-show="loading"/>
+    <div class="flex  bg-gray-100" v-show="!loading">
+        <Card style="width: 300px">
+            <template #title>Login</template>
+            <template #content>
+            <div class="p-fluid">
+                <div class="field">
+                    <label for="username">Email: </label>
+                    <InputText id="username" v-model="email" />
+                </div>
+
+                <div class="field">
+                    <label for="password">Password: </label>
+                    <Password id="password" v-model="password" toggleMask />
+                </div>
+
+                <Button label="Login" @click="handleLogin" />
+            </div>
+            </template>
+        </Card>
     </div>
 </template>
-
+  
 <script>
-
 import AppLoader from "@/components/appLoader.vue"
 export default {
     data() {
         return {
-            logged: false,
             email: '',
             password: '',
+            loading:false
         };
     },
-    components: {
+    components:{
         AppLoader
     },
     methods: {
-        onSubmit(e) {
-            e.preventDefault();
-            //TERAZ TRZEBA TUTUAJ ROBIC DALEJ 
-
-            /* po przejściu walidacji (zachowany format emaila - regex)
-            uruchamiamy funkcję ze store User
-            jeśli otrzymamy z serwera email zalogowanego usera
-            to znaczy, że można wykonywać działania na kliencie
-            np przekierować się na inny adres
-            logika pozostałych komunikatów musi być oparta o serwer
-            */
-            this.$store.dispatch("LOGIN_USER", { email: this.email, password: this.password })
+        handleLogin() {
+            this.loading=true
+            if (!this.email || !this.password) {
+                alert('Please fill in both fields.');
+                this.loading=false
+            } else {
+                this.$store.dispatch("LOGIN_USER", { email: this.email, password: this.password })
                 .then(() => {
 
-                    const { email } = this.$store.getters.GET_CURRENT_USER;
-
-                    if (email) this.logged = true;
-                    else this.logged = false;
-
-                    this.$router.push("/");
+                    const data  = this.$store.getters.GET_CURRENT_USER;
+                    if (data) this.$router.push("/");
                 })
-                .catch(() => {
-                    this.error = "niepoprawne dane logowania";
-                    this.logged = false;
+                .catch((e) => {
+                    alert(e)
                 })
-        }
-
-    },
-    computed: {
-        disabled() {
-            return this.email.length < 3;
+                .finally(()=> this.loading=false)
+            }
         },
-        loading() {
-            return this.$store.getters.GET_CURRENT_USER_LOADING;
-        }
     },
-}
+};
 </script>
 
 <style scoped>
-h2 {
-    margin: 20px auto;
-}
-
-.background {
-    background: linear-gradient(#e66465, #9198e5);
-    width: 100vw;
-    height: 90vh;
-    display: flex;
-
-}
-
-input {
-    margin: 20px 20px;
-    padding: 4px;
-    border-radius: 5px;
-}
-
-.flex {
-    margin: auto;
-    display: flex;
-}
-
-form {
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    padding: 10px;
-    background: white;
-}
+    .flex{
+        display: flex;
+        align-items: center;
+        justify-self: center;
+        height: 80vh;
+    }
+    .field {
+        margin-bottom: 1rem;
+    }
 </style>

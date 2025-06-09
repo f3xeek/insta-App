@@ -2,12 +2,12 @@ import { loginUser, logoutUser, getCurrentUser } from '@/api';
 
 const user = {
     state: {
-        userObject: null,
+        userToken: null,
         userLoading: false,
     },
     mutations: {
-        SET_CURRENT_USER(state, userObject) {
-            state.userObject = userObject;
+        SET_CURRENT_USER(state, userToken) {
+            state.userToken = userToken;
         },
         SET_CURRENT_USER_LOADING(state, value) {
             state.userLoading = value;
@@ -15,22 +15,22 @@ const user = {
     },
     getters: {
         GET_CURRENT_USER(state) {
-            return state.userObject;
+            return state.userToken;
         },
         GET_CURRENT_USER_LOADING(state) {
             return state.userLoading;
         }
     },
     actions: {
-        async LOGIN_USER({ commit, getters }, { email, password }) {
+        async LOGIN_USER({ commit, _ }, { email, password }) {
 
             commit("SET_CURRENT_USER_LOADING", true);
             return loginUser({ email, password })
-                .then((userObject) => {
-                    if (userObject.email) {
-                        commit("SET_CURRENT_USER", userObject);
+                .then((userToken) => {
+                    if (userToken.status=="success") {
+                        commit("SET_CURRENT_USER", userToken.data);
                     }else{
-                        alert(userObject.reason)
+                        alert(userToken.message)
                     }
                 })
                 .finally(() => {
@@ -52,13 +52,12 @@ const user = {
 
                 commit("SET_CURRENT_USER_LOADING", true);
                 return getCurrentUser()
-                    .then((userObject) => {
+                    .then((userToken) => {
 
-                        console.log("biorę usera z serwera", userObject);
-                        // jeśli serwer mówi że zalogowany to wstawiam go do store
+                        console.log("biorę usera z serwera", userToken);
 
-                        if (userObject.email) {
-                            commit("SET_CURRENT_USER", userObject);
+                        if (userToken.email) {
+                            commit("SET_CURRENT_USER", userToken);
                         }
                     })
                     .finally(() => {
