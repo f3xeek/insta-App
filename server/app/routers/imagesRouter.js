@@ -37,9 +37,9 @@ const router = async (req, res) => {
                 let form = formidable({})
                 form.uploadDir = fileController.getTempFileDir()
                 form.keepExtensions = true
-                form.parse(req, (err, fields, files) => {
+                form.parse(req, async (err, fields, files) => {
                     if (fields.album) {
-                        const filepath = fileController.fileMoveToAlbum(fields.album, files.file.path)
+                        const filepath = await fileController.fileMoveToAlbum(fields.album, files.file.path)
                         jsonController.addFileToJson(fields.album, filepath)
                         sendSuccess(res, jsonController.getImageDataByPath(filepath))
                     } else {

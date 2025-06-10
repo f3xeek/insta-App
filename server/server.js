@@ -33,15 +33,15 @@ createServer(async (req, res) => {
                 await tagsRouter(req, res)
             } else if (req.url.search("/api/filters") != -1) {
                 await filtersRouter(req, res)
-            } else if (req.url.search("/api/getimage") != -1) {
-                await getImageRouter(req, res)
             } else if (req.url.search("/api/profile") != -1) {
                 await profileRouter(req, res, logged);
             }
         } else sendError(res, "User not logged in.");
     } else if (req.url.search("/api/user") != -1) {
         await usersRouter(req, res)
-    } else sendError(res, "User not logged in.")
+    } else if (req.url.search("/api/getimage") != -1) {
+        await getImageRouter(req, res)
+    }else sendError(res, "User not logged in.")
 
 })
     .listen(process.env.APP_PORT, () => console.log("listen on " + process.env.APP_PORT))

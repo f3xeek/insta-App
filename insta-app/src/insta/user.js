@@ -72,7 +72,7 @@ const user = {
           });
       }
     },
-    async UPLOAD_IMAGE_WITH_TAGS({ commit, getters }, payload) {
+    async UPLOAD_IMAGE_WITH_TAGS({ commit, getters, dispatch }, payload) {
       commit("SET_CURRENT_USER_LOADING", true)
       const formadata = new FormData()
       formadata.append("file", payload.file)
@@ -87,6 +87,7 @@ const user = {
         const responseTags = await massTags(responseFile.data.id, payload.tags, getters.GET_CURRENT_USER_TOKEN)
         console.log(responseTags)
         if (responseTags.status == "error") alert(responseTags.message)
+        else dispatch("FETCH_CURRENT_USER", true);
       }
       commit("SET_CURRENT_USER_LOADING", false)
     },

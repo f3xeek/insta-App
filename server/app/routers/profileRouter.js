@@ -13,7 +13,7 @@ const router = async (req, res, email) => {
             else sendError(res, "getting data failed")
         } else if (req.url == "/api/profile/self") {
             const profileData = userController.getProfileData(email);
-            if (profileData.status) sendSuccess(res, { images: profileData.images, data: { ...profileData.data, email: email }, })
+            if (profileData.status) sendSuccess(res, { images: profileData.images, data: { ...profileData.data, email: email, host:"http://localhost:3000" }, })
             else sendError(res, "getting data failed")
         } else sendError(res, "nie ma takiego adresu")
     } else if (req.method == "PATCH") {

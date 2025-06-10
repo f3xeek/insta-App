@@ -23,7 +23,9 @@
                 </div>
 
             </div>
-            <h3> </h3>
+            <div class="flex flexwrap">
+                <div v-if="userData" v-for="image in images" class="itemDiv"> <img :src="getURLforImage(image.id)" alt="Image" class="imageItem"></div>
+            </div>
         </div>
     </div>
 
@@ -112,6 +114,10 @@ export default {
             this.tags = []
             this.tagQuery = ''
             this.showDialog = false;
+        },
+        getURLforImage(id){
+            console.log(this.userData.host+"/api/getimage/"+id)
+            return this.userData.host+"/api/getimage/"+id
         }
     },
     beforeCreate() {
@@ -123,6 +129,9 @@ export default {
         },
         userData() {
             return this.$store.getters.GET_CURRENT_USER_DATA
+        },
+        images(){
+            return this.$store.getters.GET_CURRENT_USER_IMAGES
         }
     }
 };
@@ -181,5 +190,20 @@ export default {
 .auto {
     margin: auto !important;
     width: fit-content;
+}
+.itemDiv{
+    margin: 20px;
+    max-width: 25vw;
+    padding: 20px;
+    border: 3px white solid;
+    border-radius: 30px;
+}
+
+.imageItem{
+    border-radius: 20px;
+    max-width: 100%;
+}
+.flexwrap{
+    flex-wrap: wrap;
 }
 </style>
