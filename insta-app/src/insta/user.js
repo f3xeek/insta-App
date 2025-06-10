@@ -1,4 +1,4 @@
-import { loginUser, logoutUser, getCurrentUser } from '@/api';
+import { loginUser, logoutUser, getCurrentUser, massTags, postFile } from '@/api';
 
 const user = {
   state: {
@@ -15,7 +15,7 @@ const user = {
       state.userData = userData;
     },
     SET_CURRENT_USER_IMAGES(state, userData) {
-      state.userData = userData;
+      state.userImages = userData;
     },
     SET_CURRENT_USER_LOADING(state, value) {
       state.userLoading = value;
@@ -55,23 +55,40 @@ const user = {
       commit("SET_CURRENT_USER_TOKEN", null);
       return await logoutUser();
     },
-    async FETCH_CURRENT_USER({ commit, getters },force=false) {
-        commit("SET_CURRENT_USER_LOADING", true);
-        if (getters.GET_CURRENT_USER_DATA && !force){
+    async FETCH_CURRENT_USER({ commit, getters }, force = false) {
+      commit("SET_CURRENT_USER_LOADING", true);
+      if (getters.GET_CURRENT_USER_DATA && !force) {
+        commit("SET_CURRENT_USER_LOADING", false);
+      } else {
+        return getCurrentUser(getters.GET_CURRENT_USER_TOKEN)
+          .then((response) => {
+            if (response.status == "success") {
+              commit("SET_CURRENT_USER_DATA", response.data.data);
+              commit("SET_CURRENT_USER_IMAGES", response.data.images);
+            }
+          })
+          .finally(() => {
             commit("SET_CURRENT_USER_LOADING", false);
-        }else{
-            return getCurrentUser(getters.GET_CURRENT_USER_TOKEN)
-                .then((response) => {
-                console.log("biorę usera z serwera", response);
-                if (response.status == "success") {
-                    commit("SET_CURRENT_USER_DATA", response.data.data);
-                    commit("SET_CURRENT_USER_IMAGES", response.data.images);
-                }
-                })
-                .finally(() => {
-                commit("SET_CURRENT_USER_LOADING", false);
-                });
-        }
+          });
+      }
+    },
+    async UPLOAD_IMAGE_WITH_TAGS({ commit, getters }, payload) {
+      commit("SET_CURRENT_USER_LOADING", true)
+      const formadata = new FormData()
+      formadata.append("file", payload.file)
+      formadata.append("album", getters.GET_CURRENT_USER_DATA.email)
+      const responseFile = await postFile(formadata, getters.GET_CURRENT_USER_TOKEN)
+      console.log(responseFile)
+      if (responseFile.status == "error") {
+        alert(responseFile.message)
+
+      } else {
+        console.log("start tags", payload.tags)
+        const responseTags = await massTags(responseFile.data.id, payload.tags, getters.GET_CURRENT_USER_TOKEN)
+        console.log(responseTags)
+        if (responseTags.status == "error") alert(responseTags.message)
+      }
+      commit("SET_CURRENT_USER_LOADING", false)
     },
   },
 };

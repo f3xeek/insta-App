@@ -28,20 +28,21 @@
 </template>
 
 <script setup>
-    import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router'
 
 </script>
 <style scoped>
-    a{
-        text-decoration: none;
-        color: white;
-        padding: 15px 10px;
-    }
-    .flex{
-        display: flex;
-    }
-    .gap{
-        gap: 30px;
-    }
+a {
+    text-decoration: none;
+    color: white;
+    padding: 15px 10px;
+}
 
+.flex {
+    display: flex;
+}
+
+.gap {
+    gap: 30px;
+}
 </style>
