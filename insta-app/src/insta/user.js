@@ -36,7 +36,7 @@ const user = {
     },
   },
   actions: {
-    async LOGIN_USER({ commit, _ }, { email, password }) {
+    async LOGIN_USER({ commit }, { email, password }) {
       commit("SET_CURRENT_USER_LOADING", true);
       return loginUser({ email, password })
         .then((userToken) => {
@@ -50,9 +50,14 @@ const user = {
           commit("SET_CURRENT_USER_LOADING", false);
         });
     },
-    async LOGOUT_USER({ commit }) {
+    async LOGOUT_USER({ commit,getters }) {
+      commit("SET_CURRENT_USER_LOADING",true);
+      await logoutUser(getters.GET_CURRENT_USER_TOKEN);
       commit("SET_CURRENT_USER_TOKEN", null);
-      return await logoutUser();
+      commit("SET_CURRENT_USER_DATA", null);
+      commit("SET_CURRENT_USER_IMAGES", null);
+      commit("SET_CURRENT_USER_LOADING", false);
+      
     },
     async FETCH_CURRENT_USER({ commit, getters }, force = false) {
       commit("SET_CURRENT_USER_LOADING", true);

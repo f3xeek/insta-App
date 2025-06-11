@@ -1,54 +1,57 @@
 <template>
     <appLoader v-show="userLoading" />
-    <div class="flex heig" v-show="!userLoading">
-        <div class="flex heig">
-            <div class="sidebar">
-                <h2 class="text-lg font-semibold mb-4">Menu</h2>
-                <PanelMenu :model="items" />
-                <FileUpload ref="fileUploader" mode="basic" accept="image/*" customUpload @select="onSelect"
-                    style="display: none;" />
+    <div v-if="userData">
+        <div class="flex heig" v-show="!userLoading">
+            <div class="flex heig">
+                <div class="sidebar">
+                    <h2 class="text-lg font-semibold mb-4">Menu</h2>
+                    <PanelMenu :model="items" />
+                    <FileUpload ref="fileUploader" mode="basic" accept="image/*" customUpload @select="onSelect"
+                        style="display: none;" />
+                </div>
+            </div>
+            <div class="site wi">
+                <div class="auto">
+                    <div class="flex">
+                        <img v-if="userData" :src="userData.pfp ? userData.pfp : 'https://placehold.co/400'"
+                            alt="Profile picture" class="profilePicture">
+                        <div class="auto">
+                            <h2 v-if="userData" class="x2l ">{{ userData.name + ' ' +
+                                userData.lastName }}'s page
+                            </h2>
+                            <Button class="p-button auto">EDIT PROFILE</Button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="flex flexwrap">
+                    <div v-if="userData" v-for="image in images" class="itemDiv"> <img :src="getURLforImage(image.id)" alt="Image" class="imageItem"  @click="openImagePopup(image)"></div>
+                </div>
             </div>
         </div>
-        <div class="site wi">
-            <div class="auto">
-                <div class="flex">
-                    <img v-if="userData" :src="userData.pfp ? userData.pfp : 'https://placehold.co/400'"
-                        alt="Profile picture" class="profilePicture">
-                    <div class="auto">
-                        <h2 v-if="userData" class="x2l ">{{ userData.name + ' ' +
-                            userData.lastName }}'s page
-                        </h2>
-                        <Button class="p-button auto">EDIT PROFILE</Button>
+
+        <Dialog v-model:visible="showDialog" modal header="Add Image Details" :style="{ width: '60vw' }">
+            <div class="flex dir-row">
+                <img :src="selectedImage" alt="Uploaded" class="image-dialog" />
+                <div>
+                    <label class="item">Tags:</label>
+                    <AutoComplete v-model="tags" :suggestions="tagSuggestions" multiple placeholder="Add tags"
+                        @complete="filterTags" @select="onTagSelect" @keydown.enter.native.prevent="addCustomTag"
+                        class="item" />
+                    <br />
+                    <div class="wi item">
+                        <Button @click="onSave" label="Save" class="p-button" />
                     </div>
                 </div>
-
             </div>
-            <div class="flex flexwrap">
-                <div v-if="userData" v-for="image in images" class="itemDiv"> <img :src="getURLforImage(image.id)" alt="Image" class="imageItem"  @click="openImagePopup(image)"></div>
-            </div>
-        </div>
+        </Dialog>
+        <ImagePopup
+            v-model="showImagePopup"
+            :imageUrl="popupImageUrl"
+            :image = "image"
+        />
     </div>
-
-    <Dialog v-model:visible="showDialog" modal header="Add Image Details" :style="{ width: '60vw' }">
-        <div class="flex dir-row">
-            <img :src="selectedImage" alt="Uploaded" class="image-dialog" />
-            <div>
-                <label class="item">Tags:</label>
-                <AutoComplete v-model="tags" :suggestions="tagSuggestions" multiple placeholder="Add tags"
-                    @complete="filterTags" @select="onTagSelect" @keydown.enter.native.prevent="addCustomTag"
-                    class="item" />
-                <br />
-                <div class="wi item">
-                    <Button @click="onSave" label="Save" class="p-button" />
-                </div>
-            </div>
-        </div>
-    </Dialog>
-    <ImagePopup
-        v-model="showImagePopup"
-        :imageUrl="popupImageUrl"
-        :image = "image"
-    />
+    <div v-else> <h2 style="text-align: center;">Log in to access Home page</h2></div>
 </template>
 
 <script>

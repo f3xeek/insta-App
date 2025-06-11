@@ -90,7 +90,7 @@ const patch = (url, dataObject, token = null) =>
 const getCurrentUser = async (token) => { return await get(`http://localhost:3000/api/profile/self`, (token = token)); };
 const registerUser = async (userObject) => { return await post(`http://localhost:3000/api/user/register`, userObject); }
 const loginUser = async (userObject) => { return await post(`http://localhost:3000/api/user/login`, userObject); }
-const logoutUser = async () => { return await post(`http://localhost:3000/api/profile/logout`, { token }); }
+const logoutUser = async (token) => { return await post(`http://localhost:3000/api/profile/logout`,  token,token ); }
 const confirmUser = async (link) => { return await get(link); }
 const postFile = async (formData, token) => { return await post("http://localhost:3000/api/photos", formData, token); }
 const massTags = async (imageId, tagList, token) => { return await patch("http://localhost:3000/api/photos/tags/mass", { tagsId: tagList, imageId: imageId }, token); }
