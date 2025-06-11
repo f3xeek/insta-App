@@ -24,7 +24,7 @@
 
             </div>
             <div class="flex flexwrap">
-                <div v-if="userData" v-for="image in images" class="itemDiv"> <img :src="getURLforImage(image.id)" alt="Image" class="imageItem"></div>
+                <div v-if="userData" v-for="image in images" class="itemDiv"> <img :src="getURLforImage(image.id)" alt="Image" class="imageItem"  @click="openImagePopup(image)"></div>
             </div>
         </div>
     </div>
@@ -44,6 +44,11 @@
             </div>
         </div>
     </Dialog>
+    <ImagePopup
+        v-model="showImagePopup"
+        :imageUrl="popupImageUrl"
+        :image = "image"
+    />
 </template>
 
 <script>
@@ -54,8 +59,9 @@ import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import AutoComplete from 'primevue/autocomplete';
 import Button from 'primevue/button';
+import ImagePopup from '@/components/imagePopup.vue';
 export default {
-    components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button, appLoader },
+    components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button, appLoader,ImagePopup },
     data() {
         return {
             showDialog: false,
@@ -64,7 +70,10 @@ export default {
             title: '',
             tags: [],
             tagQuery: '',
+            image:null,
             tagSuggestions: [],
+            showImagePopup: false,
+            popupImageUrl: '',
             allTagOptions: ['Nature', 'Portrait', 'Abstract', 'Urban', 'Travel', 'Macro'],
             items: [
                 {
@@ -116,9 +125,13 @@ export default {
             this.showDialog = false;
         },
         getURLforImage(id){
-            console.log(this.userData.host+"/api/getimage/"+id)
-            return this.userData.host+"/api/getimage/"+id
-        }
+            return this.userData.host+"/api/getimage/"+id+"?"+ Date.now()
+        },
+        openImagePopup(image) {
+            this.image = image
+            this.showImagePopup = true;
+        },
+
     },
     beforeCreate() {
         this.$store.dispatch("FETCH_CURRENT_USER");

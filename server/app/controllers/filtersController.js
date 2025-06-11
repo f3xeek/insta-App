@@ -7,48 +7,50 @@ export default {
         return new Promise(async (resolve, reject) => {
             try {
                 if (imagepath) {
-                    let meta = await sharp(imagepath)
-                        .metadata()
-                    resolve(meta)
-                }
-                else {
-                    resolve("url_not_found")
+                    let meta = await sharp(imagepath).metadata();
+                    resolve(meta);
+                } else {
+                    resolve("url_not_found");
                 }
             } catch (err) {
-                reject(err.mesage)
+                reject(err.mesage);
             }
-        })
+        });
     },
-    getImageWithFilter: async (filterName, filepath) => {
-        let image = undefined
-        switch (filterName) {
-            case "grayscale":
-                image = sharp(filepath).grayscale()
-                break;
-            case "tint":
-                image = sharp(filepath).tint()
-                break;
-            case "negate":
-                image = sharp(filepath).negate()
-                break;
-            case "flop":
-                image = sharp(filepath).flop()
-                break;
-            default:
-                image = sharp(filepath)
-                break;
+    getImageWithFilter: async (filterNames, filepath) => {
+        let image = sharp(filepath);
+        for (const filterName of filterNames) {
+            const lower = filterName.toLowerCase()
+            switch (lower) {
+                case "grayscale":
+                    image = image.grayscale();
+                    break;
+                case "tint":
+                    image = image.tint({r:200,g:100,b:16});
+                    break;
+                case "negate":
+                    image = image.negate();
+                    break;
+                case "flop":
+                    image = image.flop();
+                    break;
+                default:
+                    break;
+            }
         }
-        image = await image.toBuffer()
-        return image
+
+        const buffer = await image.toBuffer();
+        return buffer;
     },
-    cropImageToSquare: async (albumName, filepath) =>{
-        const fileName = path.basename(filepath)
-        const albumDir = path.join(path.resolve(), "app/albums", albumName)
+
+    cropImageToSquare: async (albumName, filepath) => {
+        const fileName = path.basename(filepath);
+        const albumDir = path.join(path.resolve(), "app/albums", albumName);
         await fs.mkdir(albumDir, { recursive: true });
 
         const outputPath = path.join(albumDir, fileName);
-        
-        const image = sharp(filepath)
+
+        const image = sharp(filepath);
 
         const size = 1000;
         try {
@@ -58,16 +60,18 @@ export default {
             const squareSize = Math.min(width, height, size);
             const left = Math.floor((width - squareSize) / 2);
             const top = Math.floor((height - squareSize) / 2);
-             await image.extract({
-                left: left,
-                top: top,
-                width: squareSize,
-                height: squareSize}).toFile(outputPath);
+            await image
+                .extract({
+                    left: left,
+                    top: top,
+                    width: squareSize,
+                    height: squareSize,
+                })
+                .toFile(outputPath);
             return outputPath;
         } catch (error) {
-            console.log(error)
-            throw error
+            console.log(error);
+            throw error;
         }
-        
-    }
-}
+    },
+};

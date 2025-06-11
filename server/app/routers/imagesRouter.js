@@ -71,7 +71,6 @@ const router = async (req, res) => {
                     sendError(res, "Zdjecie lub tag o takim id nie istnieja");
                 }
             } else if (req.url === "/api/photos/tags/mass") {
-                console.log("jestem tutaj")
                 const requestData = await getRequestData(req)
                 const parsedRequestData = JSON.parse(requestData)
                 const image = jsonController.getImageById(parsedRequestData.imageId)

@@ -8,6 +8,7 @@ export default {
             url: filePath,
             lastchange: "original",
             tags: [],
+            filters:[],
             history: [
                 {
                     status: "original",

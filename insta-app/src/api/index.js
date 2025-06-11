@@ -94,7 +94,7 @@ const logoutUser = async () => { return await post(`http://localhost:3000/api/pr
 const confirmUser = async (link) => { return await get(link); }
 const postFile = async (formData, token) => { return await post("http://localhost:3000/api/photos", formData, token); }
 const massTags = async (imageId, tagList, token) => { return await patch("http://localhost:3000/api/photos/tags/mass", { tagsId: tagList, imageId: imageId }, token); }
-
+const postFilters = async (imageId,filters,token) =>{return await post("http://localhost:3000/api/filters/add", {imageId:imageId,filters:filters}, token)}
 export {
     getCurrentUser,
     registerUser,
@@ -103,4 +103,5 @@ export {
     confirmUser,
     postFile,
     massTags,
+    postFilters,
 };

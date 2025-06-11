@@ -15,6 +15,17 @@ const router = async (req, res) => {
                 }
             }
             break;
+        case "POST":
+            if(req.url=="/api/filters/add"){
+                const data = await JSON.parse(await getRequestData(req))
+                const image = jsonController.getImageById(data.imageId)
+                if (image) {
+                    image.filters = data.filters
+                    sendSuccess(res,image)
+                } else {
+                    sendError(res, "nie ma takiego id");
+                }
+            }
         case "PATCH":
             if (req.url == "/api/filters") {
                 const requestData = await getRequestData(req)

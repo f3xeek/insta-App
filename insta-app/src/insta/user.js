@@ -42,7 +42,6 @@ const user = {
         .then((userToken) => {
           if (userToken.status == "success") {
             commit("SET_CURRENT_USER_TOKEN", userToken.data);
-            console.log(userToken);
           } else {
             alert(userToken.message);
           }
@@ -78,14 +77,11 @@ const user = {
       formadata.append("file", payload.file)
       formadata.append("album", getters.GET_CURRENT_USER_DATA.email)
       const responseFile = await postFile(formadata, getters.GET_CURRENT_USER_TOKEN)
-      console.log(responseFile)
       if (responseFile.status == "error") {
         alert(responseFile.message)
 
       } else {
-        console.log("start tags", payload.tags)
         const responseTags = await massTags(responseFile.data.id, payload.tags, getters.GET_CURRENT_USER_TOKEN)
-        console.log(responseTags)
         if (responseTags.status == "error") alert(responseTags.message)
         else dispatch("FETCH_CURRENT_USER", true);
       }
