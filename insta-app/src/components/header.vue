@@ -5,8 +5,8 @@
                 <RouterLink to="/" class="p-button-text">
                     Home
                 </RouterLink>
-                <RouterLink to="/about" class="p-button-text">
-                    About
+                <RouterLink to="/tags" class="p-button-text">
+                    Tags
                 </RouterLink>
                 <RouterLink to="/notfound" class="p-button-text">
                     NotFound
@@ -39,6 +39,7 @@ import { RouterLink } from 'vue-router'
 
 export default {
     name: 'Header',
+    components: {RouterLink},
     computed:{
         userData(){
             return this.$store.getters.GET_CURRENT_USER_DATA

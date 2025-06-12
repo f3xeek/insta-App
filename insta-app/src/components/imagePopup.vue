@@ -11,21 +11,23 @@
             alt="Preview"
             class="main-image"
             />
-
-            <div class="filters">
-            <div
-                v-for="filter in filters"
-                :key="filter"
-                class="filter-item"
-                :class="selectedFilters.includes(filter)?'selected':''"
-                @click="applyFilter(filter)"
-            >
-                <h3 style="text-align: center;">{{ filter }}</h3>
+            <div v-if="edit">
+                    <div class="filters">
+                    <div
+                        v-for="filter in filters"
+                        :key="filter"
+                        class="filter-item"
+                        :class="selectedFilters.includes(filter)?'selected':''"
+                        @click="applyFilter(filter)"
+                    >
+                        <h3 style="text-align: center;">{{ filter }}</h3>
+                    </div>
+                    </div>
+                
+                <div class="wi item">
+                    <Button @click="onClick" label="Save" class="p-button" />
+                </div>
             </div>
-            </div>
-        </div>
-        <div class="wi item">
-            <Button @click="onClick" label="Save" class="p-button" />
         </div>
     </Dialog>
 </template>
@@ -42,7 +44,8 @@ export default {
             type: Boolean,
             default: false
         },
-        image:{type:Object, }
+        image:{type:Object},
+        edit:{type:Boolean},
     },
     data() {
     return {
@@ -66,7 +69,7 @@ export default {
     },
     methods: {
         applyFilter(filter) {
-            if(filter.name == "None") {
+            if(filter == "None") {
                 this.selectedFilters.length = 0
                 this.selectedFilters.push("None")
                 }
@@ -82,11 +85,7 @@ export default {
             this.visible = false;
         },
         getImageUrl(){
-            console.log(this.image)
-            if (this.image){
-            if(this.selectedFilters[0]=="None") return "http://localhost:3000/api/getimage/"+this.image.id
-            else return "http://localhost:3000/api/getimage/"+this.image.id+"/filter/"+this.selectedFilters.join(",")
-        }
+            if (this.image) return "http://localhost:3000/api/getimage/"+this.image.id+"/filter/"+this.selectedFilters.join(",")
         },
         onClick(){
             this.visible = false;

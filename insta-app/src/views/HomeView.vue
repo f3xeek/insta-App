@@ -22,10 +22,9 @@
                             <Button class="p-button auto">EDIT PROFILE</Button>
                         </div>
                     </div>
-
-                </div>
-                <div class="flex flexwrap">
-                    <div v-if="userData" v-for="image in images" class="itemDiv"> <img :src="getURLforImage(image.id)" alt="Image" class="imageItem"  @click="openImagePopup(image)"></div>
+                    <div class="flex flexwrap">
+                        <imageCoponent v-if="userData" v-for="image in images" :host="userData.host" :edit="true" :image="image" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,11 +44,7 @@
                 </div>
             </div>
         </Dialog>
-        <ImagePopup
-            v-model="showImagePopup"
-            :imageUrl="popupImageUrl"
-            :image = "image"
-        />
+
     </div>
     <div v-else> <h2 style="text-align: center;">Log in to access Home page</h2></div>
 </template>
@@ -62,9 +57,10 @@ import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import AutoComplete from 'primevue/autocomplete';
 import Button from 'primevue/button';
-import ImagePopup from '@/components/imagePopup.vue';
+
+import imageCoponent from '@/components/imageCoponent.vue';
 export default {
-    components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button, appLoader,ImagePopup },
+    components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button, appLoader,imageCoponent },
     data() {
         return {
             showDialog: false,
@@ -75,8 +71,6 @@ export default {
             tagQuery: '',
             image:null,
             tagSuggestions: [],
-            showImagePopup: false,
-            popupImageUrl: '',
             allTagOptions: ['Nature', 'Portrait', 'Abstract', 'Urban', 'Travel', 'Macro'],
             items: [
                 {
@@ -116,6 +110,7 @@ export default {
         filterTags(event) {
             this.tagQuery = event.query
             const query = event.query.toLowerCase();
+            console.log(this.allTagOptions)
             this.tagSuggestions = this.allTagOptions.filter(opt =>
                 opt.toLowerCase().includes(query)
             );
@@ -129,10 +124,6 @@ export default {
         },
         getURLforImage(id){
             return this.userData.host+"/api/getimage/"+id+"?"+ Date.now()
-        },
-        openImagePopup(image) {
-            this.image = image
-            this.showImagePopup = true;
         },
 
     },
@@ -207,19 +198,8 @@ export default {
     margin: auto !important;
     width: fit-content;
 }
-.itemDiv{
-    margin: 20px;
-    max-width: 25vw;
-    padding: 20px;
-    border: 3px white solid;
-    border-radius: 30px;
-}
-
-.imageItem{
-    border-radius: 20px;
-    max-width: 100%;
-}
 .flexwrap{
     flex-wrap: wrap;
 }
+
 </style>

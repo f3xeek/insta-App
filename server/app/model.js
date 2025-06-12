@@ -1,19 +1,4 @@
-const images = [
-    {
-        "id": 100,
-        "album": "album",
-        "originalName": "sample",
-        "url": "/sample/",
-        "lastChange": "original",
-        "tags": [],
-        "history": [
-            {
-                "status": "original",
-                "lastModifiedDate": "lastModifiedDate"
-            }
-        ]
-    }
-];
+const images = [];
 const tags = [
     {
         id: 0,

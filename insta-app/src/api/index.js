@@ -95,6 +95,7 @@ const confirmUser = async (link) => { return await get(link); }
 const postFile = async (formData, token) => { return await post("http://localhost:3000/api/photos", formData, token); }
 const massTags = async (imageId, tagList, token) => { return await patch("http://localhost:3000/api/photos/tags/mass", { tagsId: tagList, imageId: imageId }, token); }
 const postFilters = async (imageId,filters,token) =>{return await post("http://localhost:3000/api/filters/add", {imageId:imageId,filters:filters}, token)}
+const searchImagesByTag = async (tag,token) =>{return await get(`http://localhost:3000/api/tags/filter/${tag}`, (token = token));}
 export {
     getCurrentUser,
     registerUser,
@@ -104,4 +105,5 @@ export {
     postFile,
     massTags,
     postFilters,
+    searchImagesByTag,
 };
