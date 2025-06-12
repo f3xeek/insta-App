@@ -8,7 +8,7 @@
                     <h2 class="x2l ">{{ userData.name + ' ' +
                         userData.lastName }}'s page
                     </h2>
-                    <Button v-if="edit" class="p-button auto">EDIT PROFILE</Button>
+                    <RouterLink v-if="edit" to="/editProfile" class="p-button auto">EDIT PROFILE</RouterLink>
                 </div>
             </div>
             <div class="flex flexwrap">
@@ -20,10 +20,11 @@
 
 <script>
     import imageCoponent from '@/components/imageCoponent.vue';
+    import { RouterLink } from 'vue-router';
     export default {
         name:"profilePage",
         props:{userData:{type:Object}, images:{type:Array},edit:{type:Boolean}},
-        components:{imageCoponent},
+        components:{imageCoponent, RouterLink},
     }
 </script>
 

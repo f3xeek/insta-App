@@ -97,6 +97,7 @@ const massTags = async (imageId, tagList, token) => { return await patch("http:/
 const postFilters = async (imageId,filters,token) =>{return await post("http://localhost:3000/api/filters/add", {imageId:imageId,filters:filters}, token)}
 const searchImagesByTag = async (tag,token) =>{return await get(`http://localhost:3000/api/tags/filter/${tag}`, (token = token));}
 const getProfile = async (email,token) =>{return await get(`http://localhost:3000/api/profile/${email}`, (token = token));}
+const patchProfileEdit  = async (payload,token)=>{return await patch("http://localhost:3000/api/profile", {name:payload.name,lastName:payload.lastname}, token)}
 export {
     getCurrentUser,
     registerUser,
@@ -108,4 +109,5 @@ export {
     postFilters,
     searchImagesByTag,
     getProfile,
+    patchProfileEdit,
 };

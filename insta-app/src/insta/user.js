@@ -1,4 +1,4 @@
-import { loginUser, logoutUser, getCurrentUser, massTags, postFile } from '@/api';
+import { loginUser, logoutUser, getCurrentUser, massTags, postFile, patchProfileEdit } from '@/api';
 
 const user = {
   state: {
@@ -95,6 +95,12 @@ const user = {
       }
       commit("SET_CURRENT_USER_LOADING", false)
     },
+    async PATCH_USER_DATA({commit, getters},payload){
+      commit("SET_CURRENT_USER_LOADING", true)
+      const response = await patchProfileEdit(payload, getters.GET_CURRENT_USER_TOKEN)
+      if (response.status=="error") alert(response.message)
+      commit("SET_CURRENT_USER_LOADING", false)
+    }
   },
 };
 

@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView.vue';
 import RegisterView from "@/views/RegisterView.vue";
 import TagsView from '@/views/TagsView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import EditProfileView from '@/views/EditProfileView.vue'
 import notFound from "@/views/NotFoundView.vue";
 
 const router = createRouter({
@@ -33,6 +34,11 @@ const router = createRouter({
       path: "/profile/:username",
       name: "profileView",
       component: ProfileView,
+    },
+    {
+      path: "/editProfile",
+      name: "editProfile",
+      component: EditProfileView,
     },
     {
       path: "/:pathMatch(.*)*",
