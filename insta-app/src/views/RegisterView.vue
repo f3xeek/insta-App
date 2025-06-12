@@ -53,31 +53,36 @@ export default {
     },
     methods:{
         handleRegister() {
-            if (this.password.length < 3) {
-                alert("Hasło musi mieć przynajmniej 3 znaki")
-            } else if (this.password != this.repeatPassword) {
-                alert("Podane hasła musza być takie same")
-            }else if(!this.email || !this.name || !this.lastName || !this.password){
+            const emailRegex = /^[\w.-]+@[\w-]+\.[\w.-]{2,4}$/;
+            if(!this.email || !this.name || !this.lastName || !this.password){
                 alert("Musisz uzpełnić wszystkie pola")
-            } else {
-                this.loading = true;
-                registerUser({ email: this.email, password: this.password,name:this.name, lastName:this.lastName })
-                    .then(async (data) => {
-                        if (data.status === "error") {
-                            alert(data.message)
-                        } else if (data.status === "success") {
-                            const result = await confirmUser(data.data.link)
-                            if (result.status=="success"){
-                                this.$router.push("/");
-                            }else alert(result.message)
-                        }
-                    })
-                    .catch((err) => {
-                        alert(err)
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    });
+            }else{
+                if (this.password.length < 3) {
+                    alert("Hasło musi mieć przynajmniej 3 znaki")
+                }else if (!emailRegex.test(this.email)) {
+                    alert("Niepoprawny adres e-mail");
+                } else if (this.password != this.repeatPassword) {
+                    alert("Podane hasła musza być takie same")
+                }else {
+                    this.loading = true;
+                    registerUser({ email: this.email, password: this.password,name:this.name, lastName:this.lastName })
+                        .then(async (data) => {
+                            if (data.status === "error") {
+                                alert(data.message)
+                            } else if (data.status === "success") {
+                                const result = await confirmUser(data.data.link)
+                                if (result.status=="success"){
+                                    this.$router.push("/");
+                                }else alert(result.message)
+                            }
+                        })
+                        .catch((err) => {
+                            alert(err)
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
+                }
             }
         }
     },

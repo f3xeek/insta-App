@@ -9,7 +9,7 @@ const router = async (req, res, email) => {
         if (req.url.match(/\/api\/profile\/([\w.-]+@[\w-]+\.[\w.-]{2,4})$/)) {
             const currentId = req.url.match(/\/api\/profile\/([\w.-]+@[\w-]+\.[\w.-]{2,4})$/)[1]
             const profileData = userController.getProfileData(currentId);
-            if (profileData.status) sendSuccess(res, { images: profileData.images, data: profileData.data })
+            if (profileData.status) sendSuccess(res, { images: profileData.images, data: {...profileData.data, host:"http://localhost:3000" }})
             else sendError(res, "getting data failed")
         } else if (req.url == "/api/profile/self") {
             const profileData = userController.getProfileData(email);

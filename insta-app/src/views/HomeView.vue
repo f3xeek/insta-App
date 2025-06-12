@@ -1,7 +1,7 @@
 <template>
     <appLoader v-show="userLoading" />
-    <div v-if="userData">
-        <div class="flex heig" v-show="!userLoading">
+    <div v-if="userData" v-show="!userLoading">
+        <div class="flex heig">
             <div class="flex heig">
                 <div class="sidebar">
                     <h2 class="text-lg font-semibold mb-4">Menu</h2>
@@ -10,23 +10,7 @@
                         style="display: none;" />
                 </div>
             </div>
-            <div class="site wi">
-                <div class="auto">
-                    <div class="flex">
-                        <img v-if="userData" :src="userData.pfp ? userData.pfp : 'https://placehold.co/400'"
-                            alt="Profile picture" class="profilePicture">
-                        <div class="auto">
-                            <h2 v-if="userData" class="x2l ">{{ userData.name + ' ' +
-                                userData.lastName }}'s page
-                            </h2>
-                            <Button class="p-button auto">EDIT PROFILE</Button>
-                        </div>
-                    </div>
-                    <div class="flex flexwrap">
-                        <imageCoponent v-if="userData" v-for="image in images" :host="userData.host" :edit="true" :image="image" />
-                    </div>
-                </div>
-            </div>
+            <profilePage :userData="userData" :images="images" :edit="true"/>
         </div>
 
         <Dialog v-model:visible="showDialog" modal header="Add Image Details" :style="{ width: '60vw' }">
@@ -57,10 +41,10 @@ import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import AutoComplete from 'primevue/autocomplete';
 import Button from 'primevue/button';
-
+import profilePage from '@/components/profilePage.vue';
 import imageCoponent from '@/components/imageCoponent.vue';
 export default {
-    components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button, appLoader,imageCoponent },
+    components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button, appLoader,imageCoponent, profilePage},
     data() {
         return {
             showDialog: false,
@@ -152,16 +136,6 @@ export default {
     margin: 30px;
 }
 
-.profilePicture {
-    max-width: 200px;
-    max-height: 200px;
-    border-radius: 100px;
-}
-
-.x2l {
-    font-size: xx-large;
-}
-
 .flex {
     display: flex;
     gap: 30px;
@@ -186,20 +160,9 @@ export default {
     color: aliceblue;
 }
 
-.site {
-    padding: 20px;
-}
-
 .wi {
     width: 100%;
 }
 
-.auto {
-    margin: auto !important;
-    width: fit-content;
-}
-.flexwrap{
-    flex-wrap: wrap;
-}
 
 </style>
