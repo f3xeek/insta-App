@@ -6,6 +6,9 @@
         class="custom-dialog"
         >
         <div class="dialog-content">
+            <div v-if="!edit">
+                <h2><RouterLink :to="'/profile/'+image.album">{{ image.album }}</RouterLink></h2>
+            </div>
             <img
             :src="getImageUrl()"
             alt="Preview"
@@ -28,17 +31,22 @@
                     <Button @click="onClick" label="Save" class="p-button" />
                 </div>
             </div>
+            <div v-else-if="image.tags.length>0">
+                <h3>Tags:
+                    <span v-for="tag in image.tags">{{tag}}, </span>
+                </h3>
+            </div>
         </div>
     </Dialog>
 </template>
 
 <script>
 import  Dialog  from 'primevue/dialog';
-
 import {postFilters} from "@/api/index"
+import { RouterLink } from 'vue-router';
 export default {
     name: 'ImagePopup',
-    components:{Dialog},
+    components:{Dialog,RouterLink},
     props: {
         modelValue: {
             type: Boolean,

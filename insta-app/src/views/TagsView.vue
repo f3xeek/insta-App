@@ -74,6 +74,7 @@
         this.tagSearched =new String(this.tag)
         const trimmed = this.tag.trim()
         if (trimmed) this.$store.dispatch("SET_TAG", trimmed)
+        else this.$store.dispatch("SET_TAG", '')
         await this.$store.dispatch("FETCH_TAG_IMAGES")
       }
     },

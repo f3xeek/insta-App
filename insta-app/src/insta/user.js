@@ -69,6 +69,9 @@ const user = {
             if (response.status == "success") {
               commit("SET_CURRENT_USER_DATA", response.data.data);
               commit("SET_CURRENT_USER_IMAGES", response.data.images);
+            }else{
+              commit("SET_CURRENT_USER_DATA", null);
+              commit("SET_CURRENT_USER_IMAGES", []);
             }
           })
           .finally(() => {

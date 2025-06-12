@@ -128,7 +128,7 @@ export default {
 
     },
     beforeCreate() {
-        this.$store.dispatch("FETCH_CURRENT_USER");
+        this.$store.dispatch("FETCH_CURRENT_USER", true);
     },
     computed: {
         userLoading() {
