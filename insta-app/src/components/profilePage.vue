@@ -13,7 +13,7 @@
             </div>
             <div class="flex flexwrap">
                 <div v-for="image in images">
-                    <imageCoponent  v-if="image.id!=userData.pfp" :host="userData.host" :edit="edit" :image="image" />
+                    <imageCoponent :host="userData.host" :edit="edit" :image="image" />
                 </div>
             </div>
         </div>
