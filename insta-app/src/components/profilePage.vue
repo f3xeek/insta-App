@@ -29,7 +29,7 @@
         components:{imageCoponent, RouterLink},
         methods:{
             getPFPurl(){
-                return this.userData.host + "/api/getimage/"+this.userData.pfp
+                return this.userData.host + "/api/getimage/"+this.userData.pfp + "?" +Date.now()
             }
         }
     }
