@@ -45,27 +45,6 @@ const post = (url, userObject, token = null) =>
                 });
         }, 500);
     });
-
-const deletehttp = (url, userObject, token = null) =>
-    new Promise((resolve, reject) => {
-        const config = {
-            withCredentials: true,
-            data: userObject,
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-        };
-
-        setTimeout(() => {
-            axios
-                .delete(url, config)
-                .then((response) => {
-                    console.log("data", response.data);
-                    resolve(response.data);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        }, 500);
-    });
 const patch = (url, dataObject, token = null) =>
     new Promise((resolve, reject) => {
         const config = {
