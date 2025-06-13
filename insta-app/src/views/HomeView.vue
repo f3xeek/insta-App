@@ -13,13 +13,13 @@
             <profilePage :userData="userData" :images="images" :edit="true"/>
         </div>
 
-        <Dialog v-model:visible="showDialog" modal header="Add Image Details" :style="{ width: '60vw' }">
-            <div class="flex dir-row">
+        <Dialog v-model:visible="showDialog" modal header="Add Image Details">
+            <div class="flex">
                 <img :src="selectedImage" alt="Uploaded" class="image-dialog" />
                 <div>
                     <label class="item">Tags:</label>
                     <AutoComplete v-model="tags" :suggestions="tagSuggestions" multiple placeholder="Add tags"
-                        @complete="filterTags" @select="onTagSelect" @keydown.enter.native.prevent="addCustomTag"
+                        @input="filterTags" @select="onTagSelect" @keydown.enter.native.prevent="addCustomTag"
                         class="item" />
                     <br />
                     <div class="wi item">
@@ -43,6 +43,7 @@ import AutoComplete from 'primevue/autocomplete';
 import Button from 'primevue/button';
 import profilePage from '@/components/profilePage.vue';
 import imageCoponent from '@/components/imageCoponent.vue';
+import {getAllTags} from "@/api/index"
 export default {
     components: { PanelMenu, FileUpload, Dialog, InputText, AutoComplete, Button, appLoader,imageCoponent, profilePage},
     data() {
@@ -55,7 +56,7 @@ export default {
             tagQuery: '',
             image:null,
             tagSuggestions: [],
-            allTagOptions: ['Nature', 'Portrait', 'Abstract', 'Urban', 'Travel', 'Macro'],
+            allTagOptions: [],
             items: [
                 {
                     label: 'Upload Picture',
@@ -81,20 +82,21 @@ export default {
             }
             this.tagQuery = ''
         },
-        addCustomTag() {
+        addCustomTag(event) {
             const val = this.tagQuery.trim()
-            if (val && !this.tags.includes(val)) {
+            const isValid = /^[a-zA-Z]+$/.test(val);
+            if (val && isValid && !this.tags.includes(val) ) {
                 this.tags = [...this.tags, val]
                 if (!this.allTagOptions.includes(val)) {
                     this.allTagOptions.push(val)
                 }
             }
+            event.target.value=''
             this.tagQuery = ''
         },
         filterTags(event) {
-            this.tagQuery = event.query
-            const query = event.query.toLowerCase();
-            console.log(this.allTagOptions)
+            this.tagQuery = event.target.value
+            const query = event.target.value.toLowerCase();
             this.tagSuggestions = this.allTagOptions.filter(opt =>
                 opt.toLowerCase().includes(query)
             );
@@ -111,8 +113,12 @@ export default {
         },
 
     },
-    beforeCreate() {
+    async beforeCreate() {
+        const response = await getAllTags(this.$store.getters.GET_CURRENT_USER_TOKEN)
         this.$store.dispatch("FETCH_CURRENT_USER", true);
+        if (response.status=="success")this.allTagOptions = response.data
+        else alert(response.message)
+        
     },
     computed: {
         userLoading() {

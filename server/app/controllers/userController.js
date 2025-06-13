@@ -81,9 +81,10 @@ export default {
     if(user || unverifiedUser) return false
     return true
   },
-  setPfp(email, url){
+  setPfp(email, id){
     const user = verifiedUsers.filter((user) => user.email == email)[0]
-    user.pfp = url
+    if (user.pfp) jsonController.removeTask(user.pfp)
+    user.pfp = id
     return true
   },
   deactivateToken(token){

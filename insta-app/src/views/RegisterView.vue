@@ -2,7 +2,7 @@
     <appLoader v-show="loading" />
     <div class="flex" v-show="!loading">
         <Card style="width: 300px">
-            <template #title>Login</template>
+            <template #title>Register</template>
             <template #content>
             <div class="p-fluid">
                 <div class="field">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="field">
                     <label for="repeatPassword">Repeat password: </label>
-                    <Password id="repeatPassword" v-model="repeatPassword" toggleMask />
+                    <Password id="repeatPassword" v-model="repeatPassword" :feedback="false" toggleMask />
                 </div>
 
                 <Button label="Register" @click="handleRegister" :disabled="disabled" />
@@ -72,7 +72,7 @@ export default {
                             } else if (data.status === "success") {
                                 const result = await confirmUser(data.data.link)
                                 if (result.status=="success"){
-                                    this.$router.push("/");
+                                    this.$router.push("/login");
                                 }else alert(result.message)
                             }
                         })

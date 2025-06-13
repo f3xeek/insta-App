@@ -12,7 +12,7 @@
 
                 <div class="field">
                     <label for="password">Password: </label>
-                    <Password id="password" v-model="password" toggleMask />
+                    <Password id="password" v-model="password" :feedback="false" toggleMask />
                 </div>
 
                 <Button label="Login" @click="handleLogin" />

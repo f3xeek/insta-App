@@ -31,8 +31,8 @@ const router = async (req, res, email) => {
             form.parse(req, async (err, fields, files) => {
                 const filepath = await filtersController.cropImageToSquare(email, files.file.path);
                 if (filepath) {
-                    jsonController.addFileToJson(email, filepath)
-                    if (userController.setPfp(email, filepath)) sendSuccess(res, "Pfp set")
+                    const id = jsonController.addFileToJson(email, filepath)
+                    if (userController.setPfp(email, id)) sendSuccess(res, "Pfp set")
                     else sendError(res, "something bad happened")
                 } else sendError(res, "image crop failed")
             })

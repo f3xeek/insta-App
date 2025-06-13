@@ -2,7 +2,7 @@
     <div class="site wi">
         <div class="auto">
             <div class="flex auto">
-                <img :src="userData.pfp ? userData.pfp : 'https://placehold.co/400'"
+                <img :src="userData.pfp ? getPFPurl() : 'https://placehold.co/400'"
                     alt="Profile picture" class="profilePicture">
                 <div class="auto">
                     <h2 class="x2l ">{{ userData.name + ' ' +
@@ -12,7 +12,9 @@
                 </div>
             </div>
             <div class="flex flexwrap">
-                <imageCoponent v-for="image in images" :host="userData.host" :edit="edit" :image="image" />
+                <div v-for="image in images">
+                    <imageCoponent  v-if="image.id!=userData.pfp" :host="userData.host" :edit="edit" :image="image" />
+                </div>
             </div>
         </div>
     </div>
@@ -25,6 +27,11 @@
         name:"profilePage",
         props:{userData:{type:Object}, images:{type:Array},edit:{type:Boolean}},
         components:{imageCoponent, RouterLink},
+        methods:{
+            getPFPurl(){
+                return this.userData.host + "/api/getimage/"+this.userData.pfp
+            }
+        }
     }
 </script>
 

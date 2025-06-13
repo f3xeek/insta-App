@@ -15,8 +15,8 @@ export default {
                     timestamp: timestamp
                 }
             ]
-
         })
+        return timestamp
     },
     getImages: () => {
         return images

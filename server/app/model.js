@@ -2,13 +2,13 @@ const images = [];
 const tags = [
     {
         id: 0,
-        name: "#love",
+        name: "love",
         popularity: 1000
     },
 
     {
         id: 1,
-        name: "#instagram",
+        name: "instagram",
         popularity: 900
     }
 ]

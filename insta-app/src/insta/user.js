@@ -1,4 +1,4 @@
-import { loginUser, logoutUser, getCurrentUser, massTags, postFile, patchProfileEdit } from '@/api';
+import { loginUser, logoutUser, getCurrentUser, massTags, postFile, patchProfileEdit, postPFP} from '@/api';
 
 const user = {
   state: {
@@ -100,6 +100,16 @@ const user = {
       const response = await patchProfileEdit(payload, getters.GET_CURRENT_USER_TOKEN)
       if (response.status=="error") alert(response.message)
       commit("SET_CURRENT_USER_LOADING", false)
+    },
+    async CHANGE_PFP({commit,getters, dispatch},file){
+      commit("SET_CURRENT_USER_LOADING", true);
+      const formadata = new FormData();
+      formadata.append("file", file);
+      const response = await postPFP(formadata, getters.GET_CURRENT_USER_TOKEN);
+      if(response.status == "error") alert(response.message)
+      else dispatch("FETCH_CURRENT_USER", true);
+      return response.data;
+
     }
   },
 };

@@ -15,9 +15,10 @@ const router = async (req, res) => {
                 sendSuccess(res, alltags)
             } else if (req.url == "/api/tags") {
                 sendSuccess(res, tagsController.getAllTags());
-            } else if (req.url.match(/\/api\/tags\/filter\/([a-zA-Z]*)/)) {
+            } else if (req.url.match(/\/api\/tags\/filter\/([a-zA-Z#.,]*)/)) {
                 const alltags = tagsController.getTagsList();
-                const matches = req.url.match(/\/api\/tags\/filter\/([a-zA-Z]+)/)
+                const matches = req.url.match(/\/api\/tags\/filter\/([a-zA-Z#.,]+)/)
+                console.log(matches, req.url)
                 const images = jsonController.getImages()
                 if(!matches) sendSuccess(res, images)
                 else{
@@ -27,7 +28,7 @@ const router = async (req, res) => {
                     alltags.forEach(tag=>{
                         if (tag.includes(tagName)) selectedTags.push(tag);
                     })
-                    
+                    console.log(alltags, tagName);
                     images.forEach(image=>{
                         if (image.tags.some((tag) => selectedTags.includes(tag)))
                             selectedImages.push(image)
