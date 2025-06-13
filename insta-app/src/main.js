@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import store from "./insta/index"
-import router from "./router"
+import { createApp } from "vue";
+import App from "./App.vue";
+import store from "./insta/index";
+import router from "./router";
 import PrimeVue from "primevue/config";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
@@ -11,18 +11,18 @@ import Menubar from "primevue/menubar";
 import Aura from "@primeuix/themes/aura";
 import "primeicons/primeicons.css";
 
-const app = createApp(App)
-app.use(store)
-app.use(router)
+const app = createApp(App);
+app.use(store);
+app.use(router);
 app.use(PrimeVue, {
-  theme: {
-    preset: Aura,
-    options: {
-      prefix: "p",
-      darkModeSelector: "system",
-      cssLayer: false,
+    theme: {
+        preset: Aura,
+        options: {
+            prefix: "p",
+            darkModeSelector: "system",
+            cssLayer: false,
+        },
     },
-  },
 });
 app.component("InputText", InputText);
 app.component("Password", Password);
